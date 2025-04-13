@@ -1,10 +1,3 @@
-/*
- * File Name: MazeAssignment.java
- * Authors: Moxin Guo & Victor Kwong
- * Description: This program is a GUI based maze creation/solving program.
- */
-
-
 // -=-  IMPORTS  -=-
 import java.awt.Color;
 import java.awt.Component;
@@ -22,7 +15,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
