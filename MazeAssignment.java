@@ -1,5 +1,3 @@
-package Gr12CS.Maze_Assignment;
-
 /*
  * File Name: MazeAssignment.java
  * Authors: Moxin Guo & Victor Kwong
@@ -454,7 +452,8 @@ class GuiFrame extends JFrame implements ActionListener {
     // -=-  Variables Required For Maze Generation  -=-
     static char[][] maze;
     static char[][] solvedMaze;
-    final int maxDimension = 30;
+    final int maxHeight = 30;
+    final int maxWidth = 100;
     static File file = new File("");
     static int numOfRows = 0;
     static int numOfCols = 0;
@@ -478,9 +477,9 @@ class GuiFrame extends JFrame implements ActionListener {
     JLabel authors = new JLabel("By: Moxin Guo & Victor Kwong");
     JPanel buttonsPanel = new JPanel();
     JPanel inputFieldsPanel = new JPanel();
-    JLabel widthInputLabel = new JLabel("Width(3-" + maxDimension + "):");
+    JLabel widthInputLabel = new JLabel("Width(3-" + maxWidth + "):");
     JTextField widthInputField = new JTextField(3);
-    JLabel heightInputLabel = new JLabel("Height(3-" + maxDimension + "):");
+    JLabel heightInputLabel = new JLabel("Height(3-" + maxHeight + "):");
     JTextField heightInputField = new JTextField(3);
     JButton browseFilesButton = new JButton("Select Maze Text File");
     static JLabel errorMsg = new JLabel("No messages!");
@@ -623,7 +622,7 @@ class GuiFrame extends JFrame implements ActionListener {
 
         switch (command) {
             case "Generate Completely Random Maze": // Code that executues when the "Generate Completely Random Maze" button is pressed
-                if (isWithinRange(3, maxDimension, numOfRows) && isWithinRange(3, maxDimension, numOfCols)) {
+                if (isWithinRange(3, maxHeight, numOfRows) && isWithinRange(3, maxWidth, numOfCols)) {
                     maze = MazeAssignment.generateCompletelyRandomMaze(numOfRows, numOfCols);
                     mazeVisualSetup(maze);
 
@@ -634,7 +633,7 @@ class GuiFrame extends JFrame implements ActionListener {
 
                 break;
             case "Generate Random Valid Maze": // Code that executues when the "Generate Random Valid Maze" button is pressed
-                if (isWithinRange(3, maxDimension, numOfRows) && isWithinRange(3, maxDimension, numOfCols)) {
+                if (isWithinRange(3, maxHeight, numOfRows) && isWithinRange(3, maxWidth, numOfCols)) {
                     maze = MazeAssignment.generateRandomValidMaze(numOfRows, numOfCols);
                     mazeVisualSetup(maze);
 
@@ -675,14 +674,14 @@ class GuiFrame extends JFrame implements ActionListener {
                 try {
                     int widthInput = Integer.parseInt(widthInputField.getText());
 
-                    if (isWithinRange(3, maxDimension, widthInput)) { // Checking if the width is within the dimensions range
+                    if (isWithinRange(3, maxWidth, widthInput)) { // Checking if the width is within the dimensions range
                         numOfCols = widthInput;
                         setErrorMsg("The width has been set to " + widthInput + "!");
                     } else {
-                        setErrorMsg("The width must be between 3 and " + maxDimension + "!");
+                        setErrorMsg("The width must be between 3 and " + maxWidth + "!");
                     }
                 } catch (NumberFormatException e) {
-                    setErrorMsg("The width must be an integer between 3 and " + maxDimension + "!");
+                    setErrorMsg("The width must be an integer between 3 and " + maxWidth + "!");
                 }
 
                 break;
@@ -690,14 +689,14 @@ class GuiFrame extends JFrame implements ActionListener {
                 try {
                     int heightInput = Integer.parseInt(heightInputField.getText());
 
-                    if (isWithinRange(3, maxDimension, heightInput)) { // Checking if the height is within the dimensions range.
+                    if (isWithinRange(3, maxHeight, heightInput)) { // Checking if the height is within the dimensions range.
                         numOfRows = heightInput;
                         setErrorMsg("The height has been set to " + heightInput + "!");
                     } else {
-                        setErrorMsg("The height must be between 3 and " + maxDimension + "!");
+                        setErrorMsg("The height must be between 3 and " + maxHeight + "!");
                     }
                 } catch (NumberFormatException e) {
-                    setErrorMsg("The height must be an integer between 3 and " + maxDimension + "!");
+                    setErrorMsg("The height must be an integer between 3 and " + maxHeight + "!");
                 }
 
                 break;
