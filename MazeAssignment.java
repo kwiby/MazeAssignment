@@ -76,7 +76,7 @@ public class MazeAssignment {
      * @param numOfRows, numOfCols 2 integer variables that stores the number of rows/columns.
      * @return char[][] The random valid maze
      */
-    public static char[][] generateRandomValidMaze(int numOfRows, int numOfCols) {
+    public static char[][] generateValidMaze(int numOfRows, int numOfCols) {
         resetMazeCharactersToDefault();
 
         char[][] maze = generateRandomMazeWithNoExit(numOfRows, numOfCols);
@@ -134,6 +134,80 @@ public class MazeAssignment {
 
 
     /**
+     * This method randomly creates and sets the position of a valid OR invalid exit.
+     * 
+     * @param maze A 2D char array that represents to maze.
+     * @return void
+     */
+    public static void generateRandomExit(char[][] maze) {
+        while (true) {
+            int[] randomPositionOnBorder = getPositionOnBorder(maze);
+
+            int rowIndex = randomPositionOnBorder[0]; // Index 0 is the row
+            int colIndex = randomPositionOnBorder[1]; // Indes 1 is the column
+
+            if (!( // If NOT the following:
+                ((rowIndex == 0) && (colIndex == 0)) || // Position is at TOP LEFT corner.
+                ((rowIndex == maze.length - 1) && (colIndex == 0)) || // Position is at BOTTOM LEFT corner.
+                ((rowIndex == 0) && (colIndex == maze[0].length - 1)) || // Position is at TOP RIGHT corner.
+                ((rowIndex == maze.length - 1) && (colIndex == maze[0].length - 1)) // Position is at BOTTOM RIGHT corner.
+            )) {
+                exitPositionCol = colIndex;
+                exitPositionRow = rowIndex;
+                    
+                break;
+            }
+        }
+    }
+
+
+    /**
+     * This method randomly creates and sets the position of the exit (could be invalid exit).
+     * 
+     * @param maze
+     * @return void
+     */
+    public static void generateCompletelyRandomExit(char[][] maze) {
+        generateRandomExit(maze);
+        maze[exitPositionRow][exitPositionCol] = usedMazeCharacters[3]; // Set the completely random position along the border as the exit.
+    }
+
+
+    /**
+     * This method randomly creates and sets the position of a VALID exit.
+     * 
+     * @param maze
+     * @return void
+     */
+    public static void generateValidExit(char[][] maze) {
+        while (true) {
+            generateRandomExit(maze);
+
+            int rowIndex = exitPositionRow;
+            int colIndex = exitPositionCol;
+
+            if ( // rowIndex = 0, colIndex = 1
+                ((colIndex == maze[0].length - 1) && ((maze[rowIndex][colIndex - 1] == usedMazeCharacters[1]) || 
+                                        (maze[rowIndex][colIndex - 1] == usedMazeCharacters[2]))) || // If position is on right border and left is an open path or start.
+                ((colIndex == 0) && ((maze[rowIndex][colIndex + 1] == usedMazeCharacters[1]) || 
+                                                        (maze[rowIndex][colIndex + 1] == usedMazeCharacters[2]))) || // If position is on left border and right is an open path or start.
+                ((rowIndex == maze.length - 1) && ((maze[rowIndex - 1][colIndex] == usedMazeCharacters[1]) || 
+                                        (maze[rowIndex - 1][colIndex] == usedMazeCharacters[2]))) || // If position is on bottom border and above is an open path or start.
+                ((rowIndex == 0) && ((maze[rowIndex + 1][colIndex] == usedMazeCharacters[1]) || 
+                                                    (maze[rowIndex + 1][colIndex] == usedMazeCharacters[2]))) // If position is on top border and below is an open path or start.
+            ) {
+                maze[rowIndex][colIndex] = usedMazeCharacters[3]; // Set the valid random position along the border as the exit.
+
+                exitPositionCol = colIndex;
+                exitPositionRow = rowIndex;
+                
+                break;
+            }
+        }
+    }
+
+
+    /**
      * This method generates and returns a random maze WITHOUT an exit positon set.
      * 
      * @param numOfRows, numOfCols 2 integer variables that stores the number of rows/columns.
@@ -166,62 +240,6 @@ public class MazeAssignment {
         for (int i = 0; i < maze.length; i++) {
             for (int j = 0; j < maze[i].length; j++) {
                 maze[i][j] = usedMazeCharacters[0];
-            }
-        }
-    }
-
-
-    /**
-     * This method randomly creates and sets the position of the exit (could be invalid exit).
-     * 
-     * @param maze
-     * @return void
-     */
-    public static void generateCompletelyRandomExit(char[][] maze) {
-        int[] randomPositionOnBorder = getPositionOnBorder(maze);
-
-        exitPositionRow = randomPositionOnBorder[0];
-        exitPositionCol = randomPositionOnBorder[1];
-        maze[exitPositionRow][exitPositionCol] = usedMazeCharacters[3]; // Set the compeltely random position along the border as the exit.
-    }
-
-
-    /**
-     * This method randomly creates and sets the position of a valid exit.
-     * 
-     * @param maze
-     * @return void
-     */
-    public static void generateValidExit(char[][] maze) {
-        while (true) {
-            int[] randomPositionOnBorder = getPositionOnBorder(maze);
-
-            int rowIndex = randomPositionOnBorder[0];
-            int colIndex = randomPositionOnBorder[1];
-
-            if (!( // If NOT the following:
-                ((rowIndex == 0) && (colIndex == 0)) || // Position is at TOP LEFT corner.
-                ((rowIndex == maze.length - 1) && (colIndex == 0)) || // Position is at BOTTOM LEFT corner.
-                ((rowIndex == 0) && (colIndex == maze[0].length - 1)) || // Position is at TOP RIGHT corner.
-                ((rowIndex == maze.length - 1) && (colIndex == maze[0].length - 1)) // Position is at BOTTOM RIGHT corner.
-            )) {
-                if ( // rowIndex = 0, colIndex = 1
-                    ((colIndex != 0) && ((maze[rowIndex][colIndex - 1] == usedMazeCharacters[1]) || 
-                                         (maze[rowIndex][colIndex - 1] == usedMazeCharacters[2]))) || // If position is on right border and left is an open path or start.
-                    ((colIndex != maze[0].length - 1) && ((maze[rowIndex][colIndex + 1] == usedMazeCharacters[1]) || 
-                                                          (maze[rowIndex][colIndex + 1] == usedMazeCharacters[2]))) || // If position is on left border and right is an open path or start.
-                    ((rowIndex != 0) && ((maze[rowIndex - 1][colIndex] == usedMazeCharacters[1]) || 
-                                         (maze[rowIndex - 1][colIndex] == usedMazeCharacters[2]))) || // If position is on bottom border and above is an open path or start.
-                    ((rowIndex != maze.length - 1) && ((maze[rowIndex + 1][colIndex] == usedMazeCharacters[1]) || 
-                                                       (maze[rowIndex + 1][colIndex] == usedMazeCharacters[2]))) // If position is on top border and below is an open path or start.
-                ) {
-                    maze[rowIndex][colIndex] = usedMazeCharacters[3]; // Set the valid random position along the border as the exit.
-
-                    exitPositionCol = colIndex;
-                    exitPositionRow = rowIndex;
-                    
-                    break;
-                }
             }
         }
     }
@@ -626,7 +644,7 @@ class GuiFrame extends JFrame implements ActionListener {
                 break;
             case "Generate Random Valid Maze": // Code that executues when the "Generate Random Valid Maze" button is pressed
                 if (isWithinRange(3, maxHeight, numOfRows) && isWithinRange(3, maxWidth, numOfCols)) {
-                    maze = MazeAssignment.generateRandomValidMaze(numOfRows, numOfCols);
+                    maze = MazeAssignment.generateValidMaze(numOfRows, numOfCols);
                     mazeVisualSetup(maze);
 
                     setErrorMsg("A random valid maze was generated!");
